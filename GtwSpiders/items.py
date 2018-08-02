@@ -7,6 +7,8 @@
 
 import scrapy
 
+# 定义数据保存格式
+
 
 class GtwspidersItem(scrapy.Item):
     # define the fields for your item here like:
