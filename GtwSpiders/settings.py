@@ -9,6 +9,9 @@
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
+import os
+
+
 BOT_NAME = 'GtwSpiders'
 
 SPIDER_MODULES = ['GtwSpiders.spiders']
@@ -64,9 +67,22 @@ ROBOTSTXT_OBEY = False  # 默认为True, 会读取网站上的robots协议，把
 
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'GtwSpiders.pipelines.GtwspidersPipeline': 300,
-#}
+# ITEM_PIPELINES是一个数据管道的登记表，每一项具体的数字代表它的优先级，数字越小，越早进入。
+ITEM_PIPELINES = {
+   'GtwSpiders.pipelines.GtwspidersPipeline': 300,
+   # 'scrapy.pipelines.images.ImagesPipeline': 1,
+   'GtwSpiders.pipelines.ArticleImagePipeline': 1,
+}
+
+# 图片地址从Item中获取时对应的属性值
+IMAGES_URLS_FIELD = "front_image_url"
+# 图片管道对图片获取后的存储地址
+IMAGES_STORE = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'images')  # 放在settings.py同级的images目录下
+
+# 关于图片管道图片大小过滤的配置
+# IMAGES_MIN_HEIGHT = 100 # 图片为大于 100 x 100 的
+# IMAGES_MIN_WIDTH = 100
+
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html

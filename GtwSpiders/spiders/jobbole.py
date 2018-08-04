@@ -4,6 +4,9 @@ import scrapy
 from scrapy.http import Request
 from urllib import parse
 
+from GtwSpiders.items import JobBoleItem
+from GtwSpiders.utils.common import get_md5
+
 
 class JobboleSpider(scrapy.Spider):
     name = 'jobbole'
@@ -41,11 +44,15 @@ class JobboleSpider(scrapy.Spider):
         """
 
         # 标题
-        title = response.xpath('//div[@class="entry-header"]/h1/text()').extract_first("")  # xpath获取文本内容通过./text()
-        title = response.css(".entry-header h1::text").extract_first()  # css通过::text来获取文本内容
+        # title = response.xpath('//div[@class="entry-header"]/h1/text()').extract_first("")  # xpath获取文本内容通过./text()
+        # extract_first('') 比 extract()[0]好，因为后者有风险，如果为空就会出错。前者如果为空默认为''
+        title = response.css(".entry-header h1::text").extract_first('')  # css通过::text来获取文本内容
 
         # 创建时间
         create_date = response.css("p.entry-meta-hide-on-mobile::text").extract()[0].strip().replace("·", "").strip()
+
+        # 文章图片
+        front_image_url = response.meta.get("front_image_url", "")
 
         # 点赞数
         praise_nums = response.css(".vote-post-up h10::text").extract()[0]
@@ -73,4 +80,18 @@ class JobboleSpider(scrapy.Spider):
         tag_list = [element for element in tag_list if not element.strip().endswith("评论")]
         tags = ",".join(tag_list)
 
-        pass
+        # 填充值到Item中
+        article_item = JobBoleItem()
+        article_item["title"] = title
+        article_item["url"] = response.url
+        article_item["url_object_id"] = get_md5(response.url)
+        article_item["create_date"] = create_date
+        article_item["front_image_url"] = [front_image_url]  # 在图片处理时，会按照数组的形式处理，所以此处需要转数组
+        article_item["praise_nums"] = praise_nums
+        article_item["comment_nums"] = comment_nums
+        article_item["fav_nums"] = fav_nums
+        article_item["tags"] = tags
+        article_item["content"] = content
+
+        # 返回当前的article_item，scrapy会将这些Item放入Pipelines中
+        yield article_item

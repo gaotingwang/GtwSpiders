@@ -7,10 +7,20 @@
 
 import scrapy
 
-# 定义数据保存格式
+# 定义Pipelines中的数据内容Item
 
 
-class GtwspidersItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
+class JobBoleItem(scrapy.Item):
+    # 通过使用scrapy.Field()来获取从爬虫结果中要获取的fields, 作为当前Item的属性
+    title = scrapy.Field()
+    create_date = scrapy.Field()
+    url = scrapy.Field()
+    url_object_id = scrapy.Field()
+    front_image_url = scrapy.Field()
+    front_image_path = scrapy.Field()
+    praise_nums = scrapy.Field()
+    comment_nums = scrapy.Field()
+    fav_nums = scrapy.Field()
+    content = scrapy.Field()
+    tags = scrapy.Field()
     pass
