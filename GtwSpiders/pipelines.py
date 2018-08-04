@@ -9,10 +9,12 @@
 
 from scrapy.pipelines.images import ImagesPipeline
 from scrapy.exporters import JsonItemExporter
+from twisted.enterprise import adbapi
 
 import codecs
 import json
-
+import MySQLdb
+import MySQLdb.cursors
 
 class GtwspidersPipeline(object):
     def process_item(self, item, spider):
@@ -71,3 +73,61 @@ class JsonExporterPipeline(object):
         self.exporter.finish_exporting()
         self.file.close()
 
+
+# 采用同步的机制写入mysql
+class MysqlPipeline(object):
+
+    def __init__(self):
+        self.conn = MySQLdb.connect('127.0.0.1', 'root', 'root', 'scrapy-spider', charset="utf8", use_unicode=True)
+        self.cursor = self.conn.cursor()
+
+    def process_item(self, item, spider):
+        insert_sql = """
+            INSERT INTO jobbole_article(url_object_id, title, url, front_image_url, front_image_path, `praise_nums`, `comment_nums`, `fav_nums`, `tags`, `content`, `create_date`)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+        """
+
+        # 执行sql语句
+        self.cursor.execute(insert_sql, (item["url_object_id"], item["title"], item["url"], item["front_image_url"], item["front_image_path"], item["praise_nums"], item["comment_nums"], item["fav_nums"], item["tags"], item["content"], item["create_date"]))
+        # 事务提交
+        self.conn.commit()
+
+
+# 因为爬取速度可能大于数据库存储的速度，所以需要异步操作。
+class MysqlTwistedPipeline(object):
+    def __init__(self, dbpool):
+        self.dbpool = dbpool
+
+    @classmethod
+    def from_settings(cls, settings):
+        dbparms = dict(
+            host = settings["MYSQL_HOST"],
+            db = settings["MYSQL_DBNAME"],
+            user = settings["MYSQL_USER"],
+            passwd = settings["MYSQL_PASSWORD"],
+            charset = 'utf8',
+            cursorclass = MySQLdb.cursors.DictCursor,
+            use_unicode = True,
+        )
+        dbpool = adbapi.ConnectionPool("MySQLdb", **dbparms)
+
+        return cls(dbpool)
+
+    def process_item(self, item, spider):
+        # 使用twisted将mysql插入变成异步执行
+        query = self.dbpool.runInteraction(self.do_insert, item)
+        # 处理异常
+        query.addErrback(self.handle_error, item, spider)
+
+    def do_insert(self, cursor, item):
+        # 执行具体的插入
+        # 根据不同的item 构建不同的sql语句并插入到mysql中
+        insert_sql = """
+            INSERT INTO jobbole_article(url_object_id, title, url, front_image_url, front_image_path, `praise_nums`, `comment_nums`, `fav_nums`, `tags`, `content`, `create_date`) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+        """
+        cursor.execute(insert_sql, (item["url_object_id"], item["title"], item["url"], item["front_image_url"], item["front_image_path"], item["praise_nums"], item["comment_nums"], item["fav_nums"], item["tags"], item["content"], item["create_date"]))
+
+    def handle_error(self, failure, item, spider):
+        # 处理异步插入的异常
+        print (failure)

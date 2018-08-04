@@ -74,6 +74,8 @@ ITEM_PIPELINES = {
    'GtwSpiders.pipelines.ArticleImagePipeline': 1,
    # 'GtwSpiders.pipelines.JsonWithEncodingPipeline': 2,
    # 'GtwSpiders.pipelines.JsonExporterPipeline': 2,
+   # 'GtwSpiders.pipelines.MysqlPipeline': 3,
+   'GtwSpiders.pipelines.MysqlTwistedPipeline': 3,
 }
 
 # 图片地址从Item中获取时对应的属性值
@@ -106,3 +108,9 @@ IMAGES_STORE = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'images'
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+# mysql连接配置
+MYSQL_HOST = "127.0.0.1"
+MYSQL_DBNAME = "scrapy-spider"
+MYSQL_USER = "root"
+MYSQL_PASSWORD = "root"
