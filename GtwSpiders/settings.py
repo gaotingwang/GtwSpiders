@@ -72,6 +72,8 @@ ITEM_PIPELINES = {
    'GtwSpiders.pipelines.GtwspidersPipeline': 300,
    # 'scrapy.pipelines.images.ImagesPipeline': 1,
    'GtwSpiders.pipelines.ArticleImagePipeline': 1,
+   # 'GtwSpiders.pipelines.JsonWithEncodingPipeline': 2,
+   # 'GtwSpiders.pipelines.JsonExporterPipeline': 2,
 }
 
 # 图片地址从Item中获取时对应的属性值
