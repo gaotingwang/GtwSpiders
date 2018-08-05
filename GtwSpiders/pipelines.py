@@ -29,10 +29,11 @@ class ArticleImagePipeline(ImagesPipeline):
 
     # 重写该方法可从result中获取到图片的实际下载地址
     def item_completed(self, results, item, info):
-        image_file_path = ''
-        for ok, value in results:
-            image_file_path = value["path"]
-        item["front_image_path"] = image_file_path  # 指定图片最后的保存地址
+        if "front_image_url" in item:
+            image_file_path = ''
+            for ok, value in results:
+                image_file_path = value["path"]
+            item["front_image_path"] = image_file_path  # 指定图片最后的保存地址
 
         # 一定要将item return出去，因为下一个pipeline需要
         return item
@@ -92,6 +93,8 @@ class MysqlPipeline(object):
         # 事务提交
         self.conn.commit()
 
+        return item
+
 
 # 因为爬取速度可能大于数据库存储的速度，所以需要异步操作。
 class MysqlTwistedPipeline(object):
@@ -118,15 +121,13 @@ class MysqlTwistedPipeline(object):
         query = self.dbpool.runInteraction(self.do_insert, item)
         # 处理异常
         query.addErrback(self.handle_error, item, spider)
+        return item
 
     def do_insert(self, cursor, item):
         # 执行具体的插入
         # 根据不同的item 构建不同的sql语句并插入到mysql中
-        insert_sql = """
-            INSERT INTO jobbole_article(url_object_id, title, url, front_image_url, front_image_path, `praise_nums`, `comment_nums`, `fav_nums`, `tags`, `content`, `create_date`) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
-        """
-        cursor.execute(insert_sql, (item["url_object_id"], item["title"], item["url"], item["front_image_url"], item["front_image_path"], item["praise_nums"], item["comment_nums"], item["fav_nums"], item["tags"], item["content"], item["create_date"]))
+        insert_sql, param = item.get_insert_sql()
+        cursor.execute(insert_sql, param)
 
     def handle_error(self, failure, item, spider):
         # 处理异步插入的异常
