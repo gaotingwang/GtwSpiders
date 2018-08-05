@@ -5,42 +5,16 @@
 # See documentation in:
 # https://doc.scrapy.org/en/latest/topics/items.html
 
-import datetime
-import re
-
 import scrapy
 from scrapy.loader import ItemLoader
 from scrapy.loader.processors import MapCompose,TakeFirst,Join
+
+import GtwSpiders.utils.common as common_util
 
 # 定义Pipelines中的数据内容Item,
 # 数据爬取的任务就是从非结构的数据中提取出结构性的数据, Item可以让我们自定义需要的数据结构
 
 
-# 字符串日期转日期格式
-def date_convert(date_str):
-    date_str = date_str.replace("\r","").replace("\n","").replace(" ·","").strip()
-    try:
-        create_date = datetime.datetime.strptime(date_str.replace("\r","").replace("\n","").replace(" ·","").strip(), "%Y/%m/%d").date()
-    except Exception:
-        create_date = datetime.datetime.now().date()
-
-    return create_date
-
-# 正则方式获取字符串中的数字
-def get_nums(value):
-    match_re = re.match(".*?(\d+).*", value)
-    if match_re:
-        nums = int(match_re.group(1))
-    else:
-        nums = 0
-    return nums
-
-# 过滤掉评论中不需要的标签
-def remove_comment_tags(tag_value):
-    if "评论" in tag_value:
-        return ""
-    else:
-        return tag_value
 
 
 # 自定义itemloader实现默认提取第一个
@@ -55,7 +29,7 @@ class JobBoleItem(scrapy.Item):
     create_date = scrapy.Field(
         # input_processor是针对数组中的每个值
         # MapCompose是对值依次调用传入的方法
-        input_processor=MapCompose(date_convert)
+        input_processor=MapCompose(common_util.date_convert)
     )
     url = scrapy.Field()
     url_object_id = scrapy.Field()
@@ -65,16 +39,16 @@ class JobBoleItem(scrapy.Item):
     )
     front_image_path = scrapy.Field()
     praise_nums = scrapy.Field(
-        input_processor=MapCompose(get_nums)
+        input_processor=MapCompose(common_util.get_nums)
     )
     comment_nums = scrapy.Field(
-        input_processor=MapCompose(get_nums)
+        input_processor=MapCompose(common_util.get_nums)
     )
     fav_nums = scrapy.Field(
-        input_processor=MapCompose(get_nums)
+        input_processor=MapCompose(common_util.get_nums)
     )
     tags = scrapy.Field(
-        input_processor=MapCompose(remove_comment_tags),
+        input_processor=MapCompose(common_util.remove_comment_tags),
         # 多标签也不是使用自定义中的output_processor，采用对数组中的值按“,”连接
         output_processor=Join(",")
     )
