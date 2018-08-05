@@ -1,6 +1,9 @@
 ### This Project
 GtwSpiders/images
 article*.json
+GtwSpiders/utils/cookies.txt
+GtwSpiders/utils/index_page.html
+GtwSpiders/utils/captcha.jpg
 
 ### Pycharm ###
 .idea
