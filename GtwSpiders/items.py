@@ -11,10 +11,14 @@ from scrapy.loader.processors import MapCompose,TakeFirst,Join
 
 import GtwSpiders.utils.common as common_util
 
-# 定义Pipelines中的数据内容Item,
+# 定义Pipelines中的数据内容Item
 # 数据爬取的任务就是从非结构的数据中提取出结构性的数据, Item可以让我们自定义需要的数据结构
 
 
+class GtwSpidersItem(scrapy.Item):
+    # define the fields for your item here like:
+    # name = scrapy.Field()
+    pass
 
 
 # 自定义itemloader实现默认提取第一个
