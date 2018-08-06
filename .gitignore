@@ -4,6 +4,7 @@ article*.json
 GtwSpiders/utils/cookies.txt
 GtwSpiders/utils/index_page.html
 GtwSpiders/utils/captcha.jpg
+captcha.jpg
 
 ### Pycharm ###
 .idea
