@@ -114,3 +114,7 @@ MYSQL_HOST = "127.0.0.1"
 MYSQL_DBNAME = "scrapy-spider"
 MYSQL_USER = "root"
 MYSQL_PASSWORD = "root"
+
+# 日期格式化形式
+SQL_DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
+SQL_DATE_FORMAT = "%Y-%m-%d"

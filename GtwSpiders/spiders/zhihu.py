@@ -60,10 +60,12 @@ class ZhihuSpider(scrapy.Spider):
                 # 如果提取到question相关的页面则下载后交由提取函数进行提取
                 request_url = match_obj.group(1)
                 yield scrapy.Request(request_url, headers=self.headers, callback=self.parse_question)
+                # break  # 方便调试此处可以直接break
             else:
+                # pass
+                # 方便调试此处可以注释掉,只爬取几个提问页面
                 # 如果不是question页面则直接进一步跟踪
-                pass
-                # yield scrapy.Request(url, headers=self.headers)
+                yield scrapy.Request(url, headers=self.headers)
 
     # 获取提问内容
     def parse_question(self, response):
@@ -84,6 +86,7 @@ class ZhihuSpider(scrapy.Spider):
 
         question_item = item_loader.load_item()
 
+        # 方便调试，可以分别注释掉下面一个
         yield question_item
         # 查找对应的回答页面
         yield scrapy.Request(self.start_answer_url.format(question_id, 20, 0), headers=self.headers, callback=self.parse_answer)

@@ -35,6 +35,15 @@ def get_nums(value):
         nums = 0
     return nums
 
+# 从包含,的字符串中提取出数字
+def extract_num_include_dot(text):
+    text_num = text.replace(',', '')
+    try:
+        nums = int(text_num)
+    except:
+        nums = -1
+    return nums
+
 # 过滤掉评论中不需要的标签
 def remove_comment_tags(tag_value):
     if "评论" in tag_value:
