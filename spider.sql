@@ -13,29 +13,33 @@ CREATE TABLE `scrapy-spider`.`jobbole_article` (
   PRIMARY KEY (`url_object_id`));
 
 CREATE TABLE `scrapy-spider`.`zhihu_question` (
-  `zhihu_id` BIGINT(20) NULL,
-  `topics` VARCHAR(255) NULL,
-  `url` VARCHAR(300) NULL,
-  `title` VARCHAR(300) NULL,
-  `content` LONGTEXT NULL,
-  `answer_num` INT(11) NULL,
-  `comments_num` INT(11) NULL,
-  `watch_user_num` INT(11) NULL,
-  `click_num` INT(11) NULL,
-  `create_time` DATETIME NULL,
-  `update_time` DATETIME NULL,
-  `crawl_time` DATETIME NULL,
-  `crawl_update_time` DATETIME NULL);
+  `zhihu_id` bigint(20) NOT NULL DEFAULT '0',
+  `topics` varchar(255) DEFAULT NULL,
+  `url` varchar(300) NOT NULL,
+  `title` varchar(300) NOT NULL,
+  `content` longtext NOT NULL,
+  `answer_num` int(11) NOT NULL,
+  `comments_num` int(11) NOT NULL,
+  `watch_user_num` int(11) NOT NULL,
+  `click_num` int(11) NOT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  `crawl_time` datetime NOT NULL,
+  `crawl_update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`zhihu_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `scrapy-spider`.`zhihu_answer` (
-  `zhihu_id` BIGINT(20) NULL,
-  `url` VARCHAR(300) NULL,
-  `question_id` BIGINT(20) NULL,
-  `author_id` VARCHAR(100) NULL,
-  `content` LONGTEXT NULL,
-  `parise_num` INT(11) NULL,
-  `comments_num` INT(11) NULL,
-  `create_time` DATETIME NULL,
-  `update_time` DATETIME NULL,
-  `crawl_time` DATETIME NULL,
-  `crawl_update_time` DATETIME NULL);
+  `zhihu_id` bigint(20) NOT NULL DEFAULT '0',
+  `url` varchar(300) NOT NULL,
+  `question_id` bigint(20) NOT NULL,
+  `author_id` varchar(100) DEFAULT NULL,
+  `content` longtext NOT NULL,
+  `parise_num` int(11) NOT NULL,
+  `comments_num` int(11) NOT NULL,
+  `create_time` datetime NOT NULL,
+  `update_time` datetime NOT NULL,
+  `crawl_time` datetime NOT NULL,
+  `crawl_update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`zhihu_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
