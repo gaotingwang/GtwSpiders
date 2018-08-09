@@ -77,7 +77,7 @@ class ZhihuSpider(scrapy.Spider):
         item_loader = ItemLoader(item=ZhihuQuestionItem(), response=response)
         item_loader.add_value("zhihu_id", question_id)
         item_loader.add_css("title", "h1.QuestionHeader-title::text")
-        item_loader.add_xpath("content","//*[@id='root']/div/main/div/div[1]/div[2]/div[1]/div[1]/div[2]/div/div/div/span/text()")
+        item_loader.add_css("content",".QuestionHeader-detail")
         item_loader.add_value("url", response.url)
         item_loader.add_css("answer_num", ".List-headerText span::text")
         item_loader.add_css("comments_num", ".QuestionHeader-Comment button::text")
