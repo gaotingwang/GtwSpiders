@@ -44,3 +44,26 @@ CREATE TABLE `scrapy-spider`.`zhihu_answer` (
   `crawl_update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`zhihu_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `scrapy-spider`.`lagou_job` (
+  `url_object_id` varchar(50) NOT NULL,
+  `url` varchar(300) NOT NULL,
+  `title` varchar(100) NOT NULL,
+  `salary_min` varchar(20) DEFAULT NULL,
+  `salary_max` varchar(20) DEFAULT NULL,
+  `job_city` varchar(10) DEFAULT NULL,
+  `work_years_min` varchar(100) DEFAULT NULL,
+  `work_years_max` varchar(100) DEFAULT NULL,
+  `degree_need` varchar(30) DEFAULT NULL,
+  `job_type` varchar(20) DEFAULT NULL,
+  `publish_time` varchar(20) DEFAULT NULL,
+  `tags` varchar(100) DEFAULT NULL,
+  `job_advantage` longtext,
+  `job_desc` longtext,
+  `job_addr` varchar(255) DEFAULT NULL,
+  `company_name` varchar(100) DEFAULT NULL,
+  `company_url` varchar(300) DEFAULT NULL,
+  `crawl_time` datetime DEFAULT NULL,
+  `crawl_update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`url_object_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8

@@ -51,3 +51,13 @@ def remove_comment_tags(tag_value):
     else:
         return tag_value
 
+# 去掉工作城市的斜线
+def remove_splash(value):
+    return value.replace("/", "")
+
+# 处理具体的工作地址信息
+def handle_jobaddr(value):
+    addr_list = value.split("\n")
+    addr_list = [item.strip() for item in addr_list if item.strip() != "查看地图"]
+    return "".join(addr_list)
+
