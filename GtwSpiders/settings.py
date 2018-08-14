@@ -58,6 +58,7 @@ ROBOTSTXT_OBEY = False  # 默认为True, 会读取网站上的robots协议，把
 DOWNLOADER_MIDDLEWARES = {
    'GtwSpiders.middlewares.GtwspidersDownloaderMiddleware': 543,
    'GtwSpiders.middlewares.RandomUserAgentMiddleware':555,
+   'GtwSpiders.middlewares.RandomProxyMiddleware':556,
 }
 # 动态user-agent类型
 # 可以自己修改为ie, chrome, firefox, safari, msie, opera等参数

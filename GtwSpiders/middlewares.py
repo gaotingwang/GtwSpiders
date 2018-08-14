@@ -10,6 +10,8 @@ from scrapy.http import HtmlResponse
 
 from fake_useragent import UserAgent
 
+from tools.xici_ip import GetIP
+
 
 class GtwspidersSpiderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
@@ -137,3 +139,12 @@ class RandomUserAgentMiddleware(object):
         # - return a Request object
         # - or raise IgnoreRequest
         return response
+
+
+class RandomProxyMiddleware(object):
+    """
+        动态设置ip代理
+    """
+    def process_request(self, request, spider):
+        get_ip = GetIP()
+        request.meta["proxy"] = get_ip.get_random_ip()

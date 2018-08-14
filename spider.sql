@@ -66,4 +66,11 @@ CREATE TABLE `scrapy-spider`.`lagou_job` (
   `crawl_time` datetime DEFAULT NULL,
   `crawl_update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`url_object_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `scrapy-spider`.`proxy_ip` (
+  `ip` VARCHAR(20) NOT NULL,
+  `port` INT(11) NULL,
+  `speed` FLOAT NULL,
+  `proxy_type` CHAR(5) NULL,
+  PRIMARY KEY (`ip`));
