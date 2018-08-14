@@ -6,6 +6,9 @@
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
+from scrapy.http import HtmlResponse
+
+from fake_useragent import UserAgent
 
 
 class GtwspidersSpiderMiddleware(object):
@@ -101,3 +104,36 @@ class GtwspidersDownloaderMiddleware(object):
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
+
+
+class RandomUserAgentMiddleware(object):
+    """
+        随机更换user-agent
+    """
+    def __init__(self, crawler):
+        super(RandomUserAgentMiddleware, self).__init__()
+        self.ua = UserAgent()
+        self.ua_type = crawler.settings.get("RANDOM_UA_TYPE", "random")
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls(crawler)
+
+    # 进入downloader之前，先对request进行包装预处理，处理成目标网站想要到request
+    def process_request(self, request, spider):
+        """
+        对request进行设置随机user-agent
+        """
+        def get_ua():
+            # 通过getattr()获取ua对象的random属性的值，即相当于调用ua.random方法
+            return getattr(self.ua, self.ua_type)
+
+        request.headers.setdefault('User-Agent', get_ua())
+
+    # 从downloader拿到response, 对响应结果做预处理，处理成我们自己需要的response
+    def process_response(self, request, response, spider):
+        # Must either;
+        # - return a Response object
+        # - return a Request object
+        # - or raise IgnoreRequest
+        return response

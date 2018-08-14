@@ -55,9 +55,14 @@ ROBOTSTXT_OBEY = False  # 默认为True, 会读取网站上的robots协议，把
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    'GtwSpiders.middlewares.GtwspidersDownloaderMiddleware': 543,
-#}
+DOWNLOADER_MIDDLEWARES = {
+   'GtwSpiders.middlewares.GtwspidersDownloaderMiddleware': 543,
+   'GtwSpiders.middlewares.RandomUserAgentMiddleware':555,
+}
+# 动态user-agent类型
+# 可以自己修改为ie, chrome, firefox, safari, msie, opera等参数
+# 具体值可以查看 https://github.com/hellysmile/fake-useragent
+RANDOM_UA_TYPE = 'random'
 
 # Enable or disable extensions
 # See https://doc.scrapy.org/en/latest/topics/extensions.html
