@@ -56,9 +56,10 @@ ROBOTSTXT_OBEY = False  # 默认为True, 会读取网站上的robots协议，把
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-   'GtwSpiders.middlewares.GtwspidersDownloaderMiddleware': 543,
+   # 'GtwSpiders.middlewares.GtwspidersDownloaderMiddleware': 543,
    'GtwSpiders.middlewares.RandomUserAgentMiddleware':555,
    'GtwSpiders.middlewares.RandomProxyMiddleware':556,
+   'GtwSpiders.middlewares.JSPageMiddleware':1,
 }
 # 动态user-agent类型
 # 可以自己修改为ie, chrome, firefox, safari, msie, opera等参数

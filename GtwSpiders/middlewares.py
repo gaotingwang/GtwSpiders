@@ -148,3 +148,26 @@ class RandomProxyMiddleware(object):
     def process_request(self, request, spider):
         get_ip = GetIP()
         request.meta["proxy"] = get_ip.get_random_ip()
+
+
+class JSPageMiddleware(object):
+    """
+    通过chrome请求动态网页
+    """
+
+    # 通过chrome请求动态网页
+    def process_request(self, request, spider):
+        # 也可以对request.url做正则匹配，对一类url进行浏览器访问
+        if spider.name == "jobbole":
+            # 从spider对象中获取browser对象
+            spider.browser.get(request.url)
+            import time
+            time.sleep(3)
+            print ("访问:{0}".format(request.url))
+
+            # 已经通过浏览器获取到页面结果，所以不需要再经过下载器downloader
+            # 遇到Response, scrapy不会再向downloader发送请求
+            return HtmlResponse(url=spider.browser.current_url,
+                                body=spider.browser.page_source,
+                                encoding="utf-8",
+                                request=request)
