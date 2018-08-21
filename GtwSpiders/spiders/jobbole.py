@@ -20,6 +20,10 @@ class JobboleSpider(scrapy.Spider):
     allowed_domains = ['blog.jobbole.com']
     start_urls = ['http://blog.jobbole.com/all-posts/']
 
+    # httperror.py中通过handle_httpstatus_list为每个spider指定可以访问的错误页面状态码
+    # 否则默认只可以访问200~300的页面
+    handle_httpstatus_list = [404]
+
     def __init__(self):
         # 每个spider可以有自己的browser
         # 初始化构建浏览器，这样可以使得不打开很多浏览器
@@ -37,6 +41,10 @@ class JobboleSpider(scrapy.Spider):
         获取文章列表的url,交由scrapy进行解析下载
         获取下一页url，交由scrapy解析
         """
+
+        # 数据收集器stats是放在crawler中
+        if response.status == 404:
+            self.crawler.stats.inc_value("not_found_page")
 
         # 获取每页列表中文章url
         # post_urls = response.css("#archive .floated-thumb .post-thumb a::attr(href)").extract()
