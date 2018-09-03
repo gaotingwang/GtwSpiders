@@ -14,11 +14,11 @@ import re
 from w3lib.html import remove_tags
 from elasticsearch_dsl import connections
 
-import GtwSpiders.utils.common as common_util
-from GtwSpiders.settings import SQL_DATETIME_FORMAT
-from GtwSpiders.models.es_jobbole import ArticleType
-from GtwSpiders.models.es_lagou import LagouType
-from GtwSpiders.models.es_zhihu import ZhiHuQuestionType, ZhiHuAnswerType
+import utils.common as common_util
+from settings import SQL_DATETIME_FORMAT
+from models.es_jobbole import ArticleType
+from models.es_lagou import LagouType
+from models.es_zhihu import ZhiHuQuestionType, ZhiHuAnswerType
 
 # 与ElasticSearch进行连接,生成搜索建议
 es_connection = connections.create_connection(ArticleType)

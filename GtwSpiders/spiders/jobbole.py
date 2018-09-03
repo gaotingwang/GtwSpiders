@@ -10,9 +10,9 @@ from scrapy import signals
 from selenium import webdriver
 import os
 
-from GtwSpiders.items import JobBoleItem
-from GtwSpiders.items import ItemFirstValueLoader
-from GtwSpiders.utils.common import get_md5
+from items import JobBoleItem
+from items import ItemFirstValueLoader
+from utils.common import get_md5
 
 
 class JobboleSpider(scrapy.Spider):

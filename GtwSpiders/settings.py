@@ -10,6 +10,7 @@
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 import os
+import sys
 
 
 BOT_NAME = 'GtwSpiders'
@@ -17,7 +18,8 @@ BOT_NAME = 'GtwSpiders'
 SPIDER_MODULES = ['GtwSpiders.spiders']
 NEWSPIDER_MODULE = 'GtwSpiders.spiders'
 
-
+BASE_DIR = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
+sys.path.insert(0, os.path.join(BASE_DIR, 'GtwSpiders'))
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'GtwSpiders (+http://www.yourdomain.com)'
 
@@ -59,7 +61,7 @@ DOWNLOADER_MIDDLEWARES = {
    # 'GtwSpiders.middlewares.GtwspidersDownloaderMiddleware': 543,
    'GtwSpiders.middlewares.RandomUserAgentMiddleware':555,
    # 'GtwSpiders.middlewares.RandomProxyMiddleware':556,
-   'GtwSpiders.middlewares.JSPageMiddleware':1,
+   # 'GtwSpiders.middlewares.JSPageMiddleware':1,
 }
 # 动态user-agent类型
 # 可以自己修改为ie, chrome, firefox, safari, msie, opera等参数

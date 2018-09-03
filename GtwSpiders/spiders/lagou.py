@@ -3,8 +3,8 @@ import scrapy
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
 
-from GtwSpiders.items import ItemFirstValueLoader,LagouJobItem
-from GtwSpiders.utils.common import get_md5
+from items import ItemFirstValueLoader,LagouJobItem
+from utils.common import get_md5
 from datetime import datetime
 
 

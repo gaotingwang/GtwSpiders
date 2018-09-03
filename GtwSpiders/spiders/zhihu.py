@@ -12,7 +12,7 @@ import json
 from PIL import Image
 from urllib import parse
 
-from GtwSpiders.items import ZhihuQuestionItem,ZhihuAnswerItem
+from items import ZhihuQuestionItem,ZhihuAnswerItem
 
 
 class ZhihuSpider(scrapy.Spider):
