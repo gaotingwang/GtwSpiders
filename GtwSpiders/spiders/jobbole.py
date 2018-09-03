@@ -24,13 +24,13 @@ class JobboleSpider(scrapy.Spider):
     # 否则默认只可以访问200~300的页面
     handle_httpstatus_list = [404]
 
-    def __init__(self):
-        # 每个spider可以有自己的browser
-        # 初始化构建浏览器，这样可以使得不打开很多浏览器
-        self.browser = webdriver.Chrome(executable_path=os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) + "/tools/chromedriver")
-        super(JobboleSpider, self).__init__()
-        # 在当前spider关闭的时候退出浏览器
-        dispatcher.connect(self.spider_close, signals.spider_closed)
+    # def __init__(self):
+    #     # 每个spider可以有自己的browser
+    #     # 初始化构建浏览器，这样可以使得不打开很多浏览器
+    #     self.browser = webdriver.Chrome(executable_path=os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) + "/tools/chromedriver")
+    #     super(JobboleSpider, self).__init__()
+    #     # 在当前spider关闭的时候退出浏览器
+    #     dispatcher.connect(self.spider_close, signals.spider_closed)
 
     def spider_close(self, spider):
         print("spider close")

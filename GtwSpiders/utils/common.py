@@ -61,3 +61,25 @@ def handle_jobaddr(value):
     addr_list = [item.strip() for item in addr_list if item.strip() != "查看地图"]
     return "".join(addr_list)
 
+# 生成es搜索建议词
+def generate_suggests(es_connection, index, info_tuple):
+    es = es_connection
+    # 根据字符串，生成搜索建议数组
+    used_words = set()
+    suggests = []
+    for text, weight in info_tuple:
+        if text:
+            # 调用es接口analyzer分析字符串
+            words = es.indices.analyze(index=index, body={"analyzer": "ik_max_word", "text": "{0}".format(text)})
+            # 去掉分析出来的重复词
+            analyzed_words = set([r["token"] for r in words["tokens"] if len(r["token"]) > 1])
+            # 过滤掉之前已有的词
+            new_words = analyzed_words - used_words
+            used_words = used_words | new_words
+        else:
+            new_words = set()
+
+        if new_words:
+            suggests.append({"input": list(new_words), "weight": weight})
+
+    return suggests

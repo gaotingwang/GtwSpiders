@@ -58,7 +58,7 @@ ROBOTSTXT_OBEY = False  # 默认为True, 会读取网站上的robots协议，把
 DOWNLOADER_MIDDLEWARES = {
    # 'GtwSpiders.middlewares.GtwspidersDownloaderMiddleware': 543,
    'GtwSpiders.middlewares.RandomUserAgentMiddleware':555,
-   'GtwSpiders.middlewares.RandomProxyMiddleware':556,
+   # 'GtwSpiders.middlewares.RandomProxyMiddleware':556,
    'GtwSpiders.middlewares.JSPageMiddleware':1,
 }
 # 动态user-agent类型
@@ -78,11 +78,12 @@ RANDOM_UA_TYPE = 'random'
 ITEM_PIPELINES = {
    'GtwSpiders.pipelines.GtwspidersPipeline': 300,
    # 'scrapy.pipelines.images.ImagesPipeline': 1,
-   'GtwSpiders.pipelines.ArticleImagePipeline': 1,
+   # 'GtwSpiders.pipelines.ArticleImagePipeline': 1,
    # 'GtwSpiders.pipelines.JsonWithEncodingPipeline': 2,
    # 'GtwSpiders.pipelines.JsonExporterPipeline': 2,
    # 'GtwSpiders.pipelines.MysqlPipeline': 3,
-   'GtwSpiders.pipelines.MysqlTwistedPipeline': 3,
+   # 'GtwSpiders.pipelines.MysqlTwistedPipeline': 3,
+   'GtwSpiders.pipelines.ElasticSearchPipeline': 3,
 }
 
 # 图片地址从Item中获取时对应的属性值

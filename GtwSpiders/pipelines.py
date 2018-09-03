@@ -132,3 +132,9 @@ class MysqlTwistedPipeline(object):
     def handle_error(self, failure, item, spider):
         # 处理异步插入的异常
         print (failure)
+
+class ElasticSearchPipeline(object):
+    # 将线数据写入到es中
+    def process_item(self, item, spider):
+        item.save_to_es()
+        return item
