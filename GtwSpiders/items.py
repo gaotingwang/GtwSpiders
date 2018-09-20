@@ -14,6 +14,8 @@ import re
 from w3lib.html import remove_tags
 from elasticsearch_dsl import connections
 
+import redis
+
 import utils.common as common_util
 from settings import SQL_DATETIME_FORMAT
 from models.es_jobbole import ArticleType
@@ -22,6 +24,8 @@ from models.es_zhihu import ZhiHuQuestionType, ZhiHuAnswerType
 
 # 与ElasticSearch进行连接,生成搜索建议
 es_connection = connections.create_connection(ArticleType)
+
+redis_cli = redis.StrictRedis(host="localhost")
 
 # 定义Pipelines中的数据内容Item
 # 数据爬取的任务就是从非结构的数据中提取出结构性的数据, Item可以让我们自定义需要的数据结构
@@ -116,6 +120,8 @@ class JobBoleItem(scrapy.Item):
                                                      ((blog.title, 10), (blog.tags, 6), (blog.content, 4)))
         blog.save()
 
+        redis_cli.incr("jobbole_blog_count") # redis记录数+1
+
 # 知乎的问题 item
 class ZhihuQuestionItem(scrapy.Item):
     zhihu_id = scrapy.Field()
@@ -209,6 +215,8 @@ class ZhihuQuestionItem(scrapy.Item):
 
         zhihu.save()
 
+        redis_cli.incr("zhihu_question_count") # redis记录数+1
+
 
 # 知乎的问题回答item
 class ZhihuAnswerItem(scrapy.Item):
@@ -281,6 +289,8 @@ class ZhihuAnswerItem(scrapy.Item):
                                                       ZhiHuAnswerType._default_index(),
                                                       ((zhihu.author_name, 10), (zhihu.content, 7)))
         zhihu.save()
+
+        redis_cli.incr("zhihu_answer_count") # redis记录数+1
 
 
 class LagouJobItem(scrapy.Item):
@@ -436,3 +446,5 @@ class LagouJobItem(scrapy.Item):
                                                      (job.job_addr, 5), (job.company_name, 8),
                                                      (job.degree_need, 4),(job.job_city, 9)))
         job.save()
+
+        redis_cli.incr("lagou_job_count") # redis记录数+1
