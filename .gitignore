@@ -1,10 +1,12 @@
 ### This Project
 GtwSpiders/images
+GtwSpiders/project.egg-info
 article*.json
 GtwSpiders/utils/cookies.txt
 GtwSpiders/utils/index_page.html
 GtwSpiders/utils/captcha.jpg
 captcha.jpg
+setup.py
 
 ### Pycharm ###
 .idea

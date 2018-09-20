@@ -24,6 +24,16 @@ class JobboleSpider(scrapy.Spider):
     # 否则默认只可以访问200~300的页面
     handle_httpstatus_list = [404]
 
+    def __init__(self, **kwargs): # 需要 **kwargs 参数，否则使用scrapyd部署项目运行会失败
+        super(JobboleSpider, self).__init__(**kwargs)
+        self.fail_urls = []
+        dispatcher.connect(self.handle_spider_cosed, signals.spider_closed)
+
+    def handle_spider_cosed(self, spider, reason):
+        self.crawler.stats.set_value("failed_urls", ",".join(self.fail_urls))
+        pass
+
+
     # def __init__(self):
     #     # 每个spider可以有自己的browser
     #     # 初始化构建浏览器，这样可以使得不打开很多浏览器
