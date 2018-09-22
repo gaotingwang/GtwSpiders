@@ -892,10 +892,3 @@ $ curl http://localhost:6800/delproject.json -d project=GtwSpiders
 ```
 
 
-
-运行错误解决：
-
-```
-# 添加参数 **kwargs
-def __init__(self, **kwargs):
-```
