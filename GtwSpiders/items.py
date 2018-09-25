@@ -448,3 +448,26 @@ class LagouJobItem(scrapy.Item):
         job.save()
 
         redis_cli.incr("lagou_job_count") # redis记录数+1
+
+
+class FuCaiItem(scrapy.Item):
+    code = scrapy.Field()
+    date = scrapy.Field()
+    week = scrapy.Field()
+    red = scrapy.Field()
+    blue = scrapy.Field()
+
+    def get_insert_sql(self):
+        insert_sql = """
+            insert into fucai_double(code, publish_date, week, red, blue) VALUES (%s, %s, %s, %s, %s)
+            ON DUPLICATE KEY UPDATE publish_date=VALUES(publish_date), red=VALUES(red), blue=VALUES(blue)
+        """
+        params = (
+            self["code"],
+            self["date"],
+            self["week"],
+            self["red"],
+            self["blue"],
+        )
+
+        return insert_sql, params

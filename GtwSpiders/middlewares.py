@@ -130,7 +130,7 @@ class RandomUserAgentMiddleware(object):
             # 通过getattr()获取ua对象的random属性的值，即相当于调用ua.random方法
             return getattr(self.ua, self.ua_type)
 
-        request.headers.setdefault('User-Agent', get_ua())
+        request.headers['User-Agent'] = get_ua()
 
     # 从downloader拿到response, 对响应结果做预处理，处理成我们自己需要的response
     def process_response(self, request, response, spider):

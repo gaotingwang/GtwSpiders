@@ -27,6 +27,7 @@ test().__next__()
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 # 相当在命令行执行：scrapy crawl jobbole
-execute(["scrapy", "crawl", "jobbole"])
+# execute(["scrapy", "crawl", "jobbole"])
 # execute(["scrapy", "crawl", "zhihu"])
 # execute(["scrapy", "crawl", "lagou"])
+execute(["scrapy", "crawl", "fucai"])

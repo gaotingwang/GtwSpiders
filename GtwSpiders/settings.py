@@ -84,8 +84,8 @@ ITEM_PIPELINES = {
    # 'GtwSpiders.pipelines.JsonWithEncodingPipeline': 2,
    # 'GtwSpiders.pipelines.JsonExporterPipeline': 2,
    # 'GtwSpiders.pipelines.MysqlPipeline': 3,
-   # 'GtwSpiders.pipelines.MysqlTwistedPipeline': 3,
-   'GtwSpiders.pipelines.ElasticSearchPipeline': 3,
+   'GtwSpiders.pipelines.MysqlTwistedPipeline': 3,
+   # 'GtwSpiders.pipelines.ElasticSearchPipeline': 3,
 }
 
 # 图片地址从Item中获取时对应的属性值
