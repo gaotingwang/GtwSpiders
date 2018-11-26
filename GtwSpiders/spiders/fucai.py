@@ -11,7 +11,7 @@ from items import ItemFirstValueLoader
 class FucaiSpider(scrapy.Spider):
     name = 'fucai'
     allowed_domains = ['www.cwl.gov.cn']
-    start_urls = ['http://www.cwl.gov.cn/cwl_admin/kjxx/findDrawNotice?name=ssq&issueCount=&issueStart=&issueEnd=&dayStart=2013-01-01&dayEnd=2018-10-01&pageNo=']
+    start_urls = ['http://www.cwl.gov.cn/cwl_admin/kjxx/findDrawNotice?name=ssq&issueCount=&issueStart=&issueEnd=&dayStart=2012-01-01&dayEnd=2018-11-25&pageNo=1']
 
     # 为了让不同的spider应用不同的设置，可以在spider代码中加入custom_settings进行个性化设置。
     custom_settings = {
@@ -32,6 +32,32 @@ class FucaiSpider(scrapy.Spider):
         result_dict = json.loads(response.text)
         if result_dict["result"]:
 
+            for result in json.loads(response.text)["result"]:
+                # print('>>>', result['code'] + '期的双色球')
+                # print('日期为:', result['date'][:-3])
+                # print('星期' + result['week'])
+                # print('红球号码为:', result['red'])
+                # print('蓝球号码为:', result['blue'])
+                # print('蓝2号码为:', result['blue2'])
+                # print()
+
+                fucai_item = FuCaiItem()
+                fucai_item["code"] = result['code']
+                fucai_item["date"] = result['date'][:-3]
+                fucai_item["week"] = '星期' + result['week']
+                fucai_item["red"] = result['red']
+                fucai_item["blue"] = result['blue']
+
+                # item_loader = ItemFirstValueLoader(item=FuCaiItem(), response=response)
+                # item_loader.add_value("code", result['code'])
+                # item_loader.add_value("date", result['date'][:-3])
+                # item_loader.add_value("week", '星期' + result['week'])
+                # item_loader.add_value("red", result['red'])
+                # item_loader.add_value("blue", result['blue'])
+                # fucai_item = item_loader.load_item()
+
+                yield fucai_item
+
             url = response.request.url
             flag = 'pageNo='
             flag_index = url.index(flag)
@@ -42,9 +68,9 @@ class FucaiSpider(scrapy.Spider):
                 new_page = int(url[flag_index+len(flag) : ])
                 new_page += 1
             else:
-                new_page = 1
+                new_page = 2
 
-            yield Request(url=base_url + str(new_page), callback=self.parse_detail)
+            yield Request(url=base_url + str(new_page), callback=self.parse)
 
     def parse_detail(self, response):
         """
